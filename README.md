@@ -6,29 +6,16 @@
 ## Description
 [React](https://reactjs.org/) is a JavaScript library for building user interfaces.
 
-[DEMO exchange-rate](https://cis.digitallyconstructed.ru/)
-
-[DEMO graphql](https://cis.digitallyconstructed.ru/graphql)
+[DEMO](http://ec2-3-129-72-17.us-east-2.compute.amazonaws.com:8000/)
 
 
-| Service | Repo |
-| --- | --- |
-| API 📦 | [cis-api](https://github.com/dguard/cis-api) |
-| Frontend 📦 | cis-front (you are inside) |
-| Worker 🐍| [cis-worker](https://github.com/dguard/cis-worker) |
-|  📦 |  |
-| Webhook API 🐍| [cis-webhook-api](https://github.com/dguard/cis-webhook-api) |
-| Webhook Worker 🐍| [cis-webhook-worker](https://github.com/dguard/cis-webhook-worker) |
-| Consumer Webhook 🐍| [cis-consumer-webhook](https://github.com/dguard/cis-consumer-webhook) |
-|  📦 |  |
-| Graphql API 🐍| [cis-graphql-api](https://github.com/dguard/cis-graphql-api) |
+| Service | Repo                          |
+| --- |-------------------------------|
+| Frontend 📦 | poker-holdem (you are inside) |
 
 ## Captures
 <p align="center">
-  <img src="/captures/currency-exchange-service.png" alt="screenshot" />
-</p>
-<p align="center">
-  <img src="/captures/graphql.png" alt="screenshot" />
+  <img src="/captures/poker-holdem.jpg" alt="screenshot" />
 </p>
 
 
