@@ -21,7 +21,7 @@ const CardShirt = ({style, className}: {style?: object, className?: string}) => 
     border: '2px solid #fff'
   }, style ?? style)
 
-  return <img className={className} width={60} height={90} style={newStyle} src={'cardShirt.png'} />
+  return <img className={className} width={60} height={90} style={newStyle} src={'public/cardShirt.png'} />
 }
 let counter = 1
 
@@ -29,73 +29,73 @@ const Dib25Cent = ({style}: {style?: object}) => {
   const newStyle = Object.assign({
     height: 50, width: 50, borderRadius: 50
   }, style ?? style)
-  return <img src={'dib25Cent.png'} style={newStyle} />
+  return <img src={'public/dib25Cent.png'} style={newStyle} />
 }
 const Dib50Cent = ({style}: {style?: object}) => {
   const newStyle = Object.assign({
     height: 50, width: 50, borderRadius: 50
   }, style ?? style)
-  return <img src={'dib50Cent.png'} style={newStyle} />
+  return <img src={'public/dib50Cent.png'} style={newStyle} />
 }
 const Dib1Dollar = ({style}: {style?: object}) => {
   const newStyle = Object.assign({
     height: 50, width: 50, borderRadius: 50
   }, style ?? style)
-  return <img src={'dib1Dollar.png'} style={newStyle} />
+  return <img src={'public/dib1Dollar.png'} style={newStyle} />
 }
 const Dib5Dollars = ({style}: {style?: object}) => {
   const newStyle = Object.assign({
     height: 50, width: 50, borderRadius: 50
   }, style ?? style)
-  return <img src={'dib5Dollars.png'} style={newStyle} />
+  return <img src={'public/dib5Dollars.png'} style={newStyle} />
 }
 const Dib10Dollars = ({style}: {style?: object}) => {
   const newStyle = Object.assign({
     height: 50, width: 50, borderRadius: 50
   }, style ?? style)
-  return <img src={'dib10Dollars.png'} style={newStyle} />
+  return <img src={'public/dib10Dollars.png'} style={newStyle} />
 }
 const Dib25Dollars = ({style}: {style?: object}) => {
   const newStyle = Object.assign({
     height: 50, width: 50, borderRadius: 50
   }, style ?? style)
-  return <img src={'dib25Dollars.png'} style={newStyle} />
+  return <img src={'public/dib25Dollars.png'} style={newStyle} />
 }
 const Dib50Dollars = ({style}: {style?: object}) => {
   const newStyle = Object.assign({
     height: 50, width: 50, borderRadius: 50
   }, style ?? style)
-  return <img src={'dib50Dollars.png'} style={newStyle} />
+  return <img src={'public/dib50Dollars.png'} style={newStyle} />
 }
 const Dib100Dollars = ({style}: {style?: object}) => {
   const newStyle = Object.assign({
     height: 50, width: 50, borderRadius: 50
   }, style ?? style)
-  return <img src={'dib100Dollars.png'} style={newStyle} />
+  return <img src={'public/dib100Dollars.png'} style={newStyle} />
 }
 const Dib500Dollars = ({style}: {style?: object}) => {
   const newStyle = Object.assign({
     height: 50, width: 50, borderRadius: 50
   }, style ?? style)
-  return <img src={'dib500Dollars.png'} style={newStyle} />
+  return <img src={'public/dib500Dollars.png'} style={newStyle} />
 }
 const Dib1000Dollars = ({style}: {style?: object}) => {
   const newStyle = Object.assign({
     height: 50, width: 50, borderRadius: 50
   }, style ?? style)
-  return <img src={'dib1000Dollars.png'} style={newStyle} />
+  return <img src={'public/dib1000Dollars.png'} style={newStyle} />
 }
 const Dib5000Dollars = ({style}: {style?: object}) => {
   const newStyle = Object.assign({
     height: 50, width: 50, borderRadius: 50
   }, style ?? style)
-  return <img src={'dib5000Dollars.png'} style={newStyle} />
+  return <img src={'public/dib5000Dollars.png'} style={newStyle} />
 }
 const Dib10000Dollars = ({style}: {style?: object}) => {
   const newStyle = Object.assign({
     height: 50, width: 50, borderRadius: 50
   }, style ?? style)
-  return <img src={'dib10000Dollars.png'} style={newStyle} />
+  return <img src={'public/dib10000Dollars.png'} style={newStyle} />
 }
 
 const DibGroup = ({dib, count, rotate, style, className}: {dib: ReactElement, count: number, rotate?: string, style?: object, className?: string}) => {
@@ -743,7 +743,7 @@ export function PokerRoom(){
                   <PlayerBottomCenterCards />
 
                   <div style={{position: 'relative'}}>
-                    <img style={{marginTop: 10}} width={50} height={50} src={'dealer.png'} />
+                    <img style={{marginTop: 10}} width={50} height={50} src={'public/dealer.png'} />
 
                     {deckCardPositions.map((card, index) => {
                       return (
@@ -809,17 +809,17 @@ export function PokerRoom(){
 
 
 
-          <img className={`${PLAYER_JASMINE}player`} style={{position: 'absolute', top: 20, left: 420, backgroundColor: 'white', borderRadius: 100, border: `2px solid #2a89af`, backgroundColor: '#2a89af'}} width={100} height={100} src={'jasmine.png'} />
-          <img className={`${PLAYER_SULTAN}player`} style={{position: 'absolute', top: 20, right: 0, left: 0, margin: 'auto', borderRadius: 100, border: `2px solid #feb937`, backgroundColor: '#feb937'}} width={100} height={100} src={'sultan.png'} />
-          <img className={`${PLAYER_TIGER}player`} style={{position: 'absolute', top: 20, right: 420, borderRadius: 100, border: `2px solid #cc8207`, backgroundColor: '#cc8207'}} width={100} height={100} src={'tiger.png'} />
+          <img className={`${PLAYER_JASMINE}player`} style={{position: 'absolute', top: 20, left: 420, backgroundColor: 'white', borderRadius: 100, border: `2px solid #2a89af`, backgroundColor: '#2a89af'}} width={100} height={100} src={'public/jasmine.png'} />
+          <img className={`${PLAYER_SULTAN}player`} style={{position: 'absolute', top: 20, right: 0, left: 0, margin: 'auto', borderRadius: 100, border: `2px solid #feb937`, backgroundColor: '#feb937'}} width={100} height={100} src={'public/sultan.png'} />
+          <img className={`${PLAYER_TIGER}player`} style={{position: 'absolute', top: 20, right: 420, borderRadius: 100, border: `2px solid #cc8207`, backgroundColor: '#cc8207'}} width={100} height={100} src={'public/tiger.png'} />
 
-          <img className={`${PLAYER_EVE}player`} style={{position: 'absolute', top: 150, right: 120, backgroundColor: 'white', borderRadius: 100, border: `2px solid #71457b`, backgroundColor: '#71457b'}} width={100} height={100} src={'eva.png'} />
-          <img className={`${PLAYER_WALLE}player`} style={{position: 'absolute', top: 150, left: 120, backgroundColor: 'white', borderRadius: 100, border: `2px solid #71457b`, backgroundColor: '#71457b'}} width={100} height={100} src={'walle.png'} />
-          <img className={`${PLAYER_CARPET}player`} style={{position: 'absolute', bottom: 150, right: 120, backgroundColor: 'white', borderRadius: 100, border: `2px solid #71457b`, backgroundColor: '#71457b'}} width={100} height={100} src={'carpet.png'} />
-          <img className={`${PLAYER_ABU}player`} style={{position: 'absolute', bottom: 150, left: 120, backgroundColor: 'white', borderRadius: 100, border: `2px solid #71457b`, backgroundColor: '#71457b'}} width={100} height={100} src={'monkey.png'} />
-          <img className={`${PLAYER_YAGO}player`} style={{position: 'absolute', bottom: 20, left: 420, backgroundColor: 'white', borderRadius: 100, border: `2px solid #ff2531`, backgroundColor: '#ff2531'}} width={100} height={100} src={'yago.png'} />
-          <img className={`${PLAYER_ALLADIN}player`} style={{position: 'absolute', bottom: 20, right: 0, left: 0, margin: 'auto', borderRadius: 100, border: `2px solid #dd446c`, backgroundColor: '#dd446c'}} width={100} height={100} src={'aladdin.png'} />
-          <img className={`${PLAYER_JINNY}player`} style={{position: 'absolute', bottom: 20, right: 420, borderRadius: 100, border: `2px solid #51bbeb`, backgroundColor: '#51bbeb', backgroundColor: '#51bbeb'}} width={100} height={100} src={'jinn.png'} />
+          <img className={`${PLAYER_EVE}player`} style={{position: 'absolute', top: 150, right: 120, backgroundColor: 'white', borderRadius: 100, border: `2px solid #71457b`, backgroundColor: '#71457b'}} width={100} height={100} src={'public/eva.png'} />
+          <img className={`${PLAYER_WALLE}player`} style={{position: 'absolute', top: 150, left: 120, backgroundColor: 'white', borderRadius: 100, border: `2px solid #71457b`, backgroundColor: '#71457b'}} width={100} height={100} src={'public/walle.png'} />
+          <img className={`${PLAYER_CARPET}player`} style={{position: 'absolute', bottom: 150, right: 120, backgroundColor: 'white', borderRadius: 100, border: `2px solid #71457b`, backgroundColor: '#71457b'}} width={100} height={100} src={'public/carpet.png'} />
+          <img className={`${PLAYER_ABU}player`} style={{position: 'absolute', bottom: 150, left: 120, backgroundColor: 'white', borderRadius: 100, border: `2px solid #71457b`, backgroundColor: '#71457b'}} width={100} height={100} src={'public/monkey.png'} />
+          <img className={`${PLAYER_YAGO}player`} style={{position: 'absolute', bottom: 20, left: 420, backgroundColor: 'white', borderRadius: 100, border: `2px solid #ff2531`, backgroundColor: '#ff2531'}} width={100} height={100} src={'public/yago.png'} />
+          <img className={`${PLAYER_ALLADIN}player`} style={{position: 'absolute', bottom: 20, right: 0, left: 0, margin: 'auto', borderRadius: 100, border: `2px solid #dd446c`, backgroundColor: '#dd446c'}} width={100} height={100} src={'public/aladdin.png'} />
+          <img className={`${PLAYER_JINNY}player`} style={{position: 'absolute', bottom: 20, right: 420, borderRadius: 100, border: `2px solid #51bbeb`, backgroundColor: '#51bbeb', backgroundColor: '#51bbeb'}} width={100} height={100} src={'public/jinn.png'} />
         </div>
 
         { [PLAYER_ALLADIN, PLAYER_YAGO, PLAYER_ABU, PLAYER_CARPET, PLAYER_WALLE, PLAYER_JASMINE, PLAYER_SULTAN, PLAYER_TIGER, PLAYER_EVE, PLAYER_CARPET].indexOf(selectedPlayer) !== -1 && (

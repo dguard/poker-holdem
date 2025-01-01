@@ -1,5 +1,6 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 
 import NotFound from "pages/404";
 import CurrencyExchange from "../pages/CurrencyExcange";
@@ -10,7 +11,7 @@ interface IProps {}
 
 const App: React.FC<IProps> = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Switch>
         <Route path="/" exact component={PokerRoom} />
         <Route path="/currency-exchange" component={CurrencyExchange} />
@@ -18,7 +19,7 @@ const App: React.FC<IProps> = () => {
 
         <Route component={NotFound} />
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
