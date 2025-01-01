@@ -2,6 +2,15 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
 
+## Testing
+```
+sudo apt-get install ts-node
+
+ts-node -r tsconfig-paths/register src/handRanking.spec.ts
+ts-node -r tsconfig-paths/register src/handSameRanking.spec.ts
+```
+
+
 [travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
 [travis-url]: https://travis-ci.org/nestjs/nest
 [linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
