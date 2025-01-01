@@ -6,7 +6,7 @@
 ## Description
 [React](https://reactjs.org/) is a JavaScript library for building user interfaces.
 
-[DEMO](http://ec2-3-129-72-17.us-east-2.compute.amazonaws.com:8000/)
+[DEMO](https://dguard.github.io/poker-holdem/)
 
 
 | Service | Repo                          |
