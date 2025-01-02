@@ -18,7 +18,6 @@ export const animateMovingPlayerDips = async (chosenPlayerBet, player) => {
           playerDipRect = dipElement.getBoundingClientRect(),
           playerDipOffsetTop   = playerDipRect.top - bodyRect.top,
           playerDipOffsetLeft   = playerDipRect.left - bodyRect.left;
-        debugger
 
         const newDipElement = dipElement.cloneNode(true)
         newDipElement['style']['z-index'] = 100
@@ -42,7 +41,6 @@ export const animateMovingPlayerDips = async (chosenPlayerBet, player) => {
           playerDipOffsetTop   = playerDipRect.top - bodyRect.top,
           playerDipOffsetLeft   = playerDipRect.left - bodyRect.left;
 
-        debugger
         var translateYValue = offsetTop - playerDipOffsetTop - index*bottomDiff
         var translateXValue = offsetLeft - playerDipOffsetLeft
         newDipElement.style['transition'] = `2s all`

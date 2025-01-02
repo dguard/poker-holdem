@@ -102,11 +102,32 @@ const DibGroup = ({dib, count, rotate, style, className}: {dib: ReactElement, co
   const newStyle = Object.assign({position: 'relative', width: 50, height: 50, display:' inline-block'}, style ?? style)
   return <div className={className} style={newStyle}>
     {Array.from(Array(count)).map((_, index) => {
-      if(rotate === '-180deg') {
-        return dib({style: {position: 'absolute', top: 0 +index * 4}})
+      switch(dib) {
+        case Dib50Dollars:
+          if (rotate === '-180deg') {
+            return <Dib50Dollars key={index} style={{position: 'absolute', top: 0 + index * 4}}/>
+          }
+          return <Dib50Dollars key={index} style={{position: 'absolute', bottom: 0 + index * 4}}/>
+          break
+            case Dib100Dollars:
+              if (rotate === '-180deg') {
+                return <Dib100Dollars key={index} style={{position: 'absolute', top: 0 + index * 4}}/>
+              }
+              return <Dib100Dollars key={index} style={{position: 'absolute', bottom: 0 + index * 4}}/>
+              break
+            case Dib5000Dollars:
+              if (rotate === '-180deg') {
+                return <Dib5000Dollars key={index} style={{position: 'absolute', top: 0 + index * 4}}/>
+              }
+              return <Dib5000Dollars key={index} style={{position: 'absolute', bottom: 0 + index * 4}}/>
+              break
+            case Dib10000Dollars:
+              if (rotate === '-180deg') {
+                return <Dib10000Dollars key={index} style={{position: 'absolute', top: 0 + index * 4}}/>
+              }
+              return <Dib10000Dollars key={index} style={{position: 'absolute', bottom: 0 + index * 4}}/>
+              break
       }
-
-      return dib({style: {position: 'absolute', bottom: 0 + index * 4}})
     })}
   </div>
 }
@@ -209,7 +230,7 @@ const PlayerBottomRightCards = ({cards}) => {
       {/*<CardShirt style={{transformOrigin: 'left bottom',  position: 'absolute', left: 0, transform: 'rotate(-14deg)'}}  />*/}
       {/*<CardShirt />*/}
      {Array.from(Array(cards.length)).map((_, index) => {
-       return <CardShirt className={'deck-card'} style={{ position: 'absolute', bottom: index === 0 ? -117 : -115 + index * 0.4, left: 0, right: 0}} />
+       return <CardShirt key={index} className={'deck-card'} style={{ position: 'absolute', bottom: index === 0 ? -117 : -115 + index * 0.4, left: 0, right: 0}} />
      })}
    </div>
  )
@@ -256,16 +277,16 @@ const PlayerDibs = ({style, rotate, className, dips}: {style?: object, rotate?: 
     <div className={className} style={{position: 'relative'}}>
       {dips.map((dip, index) => {
         if(dip.dipAmount === DIP_AMOUNT_50_DOLLARS) {
-          return <DibGroup className={DIP_AMOUNT_50_DOLLARS} rotate={rotate} dib={Dib50Dollars} count={dip.count} style={{zIndex: rotate === '-180deg' ? DIP_AMOUNTS.length-index : 0}} />
+          return <DibGroup key={index} className={DIP_AMOUNT_50_DOLLARS} rotate={rotate} dib={Dib50Dollars} count={dip.count} style={{zIndex: rotate === '-180deg' ? DIP_AMOUNTS.length-index : 0}} />
         }
         if(dip.dipAmount === DIP_AMOUNT_100_DOLLARS) {
-          return <DibGroup className={DIP_AMOUNT_100_DOLLARS} rotate={rotate} dib={Dib100Dollars} count={dip.count} style={{zIndex: rotate === '-180deg' ? DIP_AMOUNTS.length-index : 0}} />
+          return <DibGroup key={index} className={DIP_AMOUNT_100_DOLLARS} rotate={rotate} dib={Dib100Dollars} count={dip.count} style={{zIndex: rotate === '-180deg' ? DIP_AMOUNTS.length-index : 0}} />
         }
         if(dip.dipAmount === DIP_AMOUNT_5000_DOLLARS) {
-          return <DibGroup className={DIP_AMOUNT_5000_DOLLARS} rotate={rotate} dib={Dib5000Dollars} count={dip.count} style={{zIndex: rotate === '-180deg' ? DIP_AMOUNTS.length-index : 0}} />
+          return <DibGroup key={index} className={DIP_AMOUNT_5000_DOLLARS} rotate={rotate} dib={Dib5000Dollars} count={dip.count} style={{zIndex: rotate === '-180deg' ? DIP_AMOUNTS.length-index : 0}} />
         }
         if(dip.dipAmount === DIP_AMOUNT_10000_DOLLARS) {
-          return <DibGroup className={DIP_AMOUNT_10000_DOLLARS} rotate={rotate} dib={Dib10000Dollars} count={dip.count} style={{zIndex: rotate === '-180deg' ? DIP_AMOUNTS.length-index : 0}} />
+          return <DibGroup key={index} className={DIP_AMOUNT_10000_DOLLARS} rotate={rotate} dib={Dib10000Dollars} count={dip.count} style={{zIndex: rotate === '-180deg' ? DIP_AMOUNTS.length-index : 0}} />
         }
       })}
     </div>
@@ -384,6 +405,8 @@ export function PokerRoom(){
   const [raiseAllowed, setRaiseAllowed] = useState(false)
   const [maxBet, setMaxBet] = useState(-Number.MAX_VALUE)
 
+  let showAnimateMovingPlayerDips = 'show-animate-from-original'
+
   const defaultPlayerDips = [{
     dipAmount: DIP_AMOUNT_50_DOLLARS,
     count: 5
@@ -400,13 +423,13 @@ export function PokerRoom(){
 
   const defaultPotDips = [{
     dipAmount: DIP_AMOUNT_50_DOLLARS,
-    count: 5
+    count: 2
   }, {
     dipAmount: DIP_AMOUNT_100_DOLLARS,
-    count: 10
+    count: 2
   }, {
     dipAmount: DIP_AMOUNT_5000_DOLLARS,
-    count: 10
+    count: 2
   }, {
     dipAmount: DIP_AMOUNT_10000_DOLLARS,
     count: 2
@@ -512,7 +535,7 @@ export function PokerRoom(){
       } else {
         deckCard.style['transform'] = `translateY(${translateYValue}px) translateX(${translateXValue}px) rotate(${rotateValue})`
       }
-      console.log(deckCard.style)
+      // console.log(deckCard.style)
 
       setTimeout(() => {
         deckCard.style['z-index'] = 0
@@ -584,10 +607,17 @@ export function PokerRoom(){
   }
 
   const handleCompleteSmallBlindBet = async (player) => {
+    if('show-animate-from-original' === showAnimateMovingPlayerDips) {
+      // keep
+    } else {
+      return false
+    }
+    showAnimateMovingPlayerDips = 'show-animate-moving-player-dips'
     await animateMovingPlayerDips(chosenPlayerBetValue.value, player)
 
     await new Promise((resolve) => {
       setTimeout(() => {
+        showAnimateMovingPlayerDips = 'show-animate-from-original'
         resolve()
       }, 2000)
     })
@@ -651,13 +681,18 @@ export function PokerRoom(){
 
   }
   const handleCall = async() => {
+    if('show-animate-from-original' === showAnimateMovingPlayerDips) {
+      // keep
+    } else {
+      return false
+    }
+
     // maxBet
     const playerDips = playersDips.filter((item) => {
       return item.player === selectedPlayer
     })[0].dips
     const listBetPieces = []
     let currentBet = 0
-    debugger
 
     for(let i = playerDips.length-1; i >= 0; i--) {
       const oneDip = Number(DIP_NUMBERS.filter((item) => { return item.dipAmount === playerDips[i].dipAmount })[0].number.replace('$', ''))
@@ -747,7 +782,7 @@ export function PokerRoom(){
 
                     {deckCardPositions.map((card, index) => {
                       return (
-                        <div className='dealer-deck-moved' style={{position: 'relative'}}>
+                        <div className='dealer-deck-moved' key={index} style={{position: 'relative'}}>
                           <CardShirt style={{zIndex: 0, position: 'absolute', bottom: card.bottomValue, left: 0, right: 0,
                             transform: `translateY(${card.translateYValue}px) translateX(${card.translateXValue}px) rotate(${card.rotateValue})` }} />
                         </div>
@@ -838,7 +873,7 @@ export function PokerRoom(){
                 />
               )}
 
-              {isCallAllowed() && (<div style={{
+              {'show-animate-from-original' === showAnimateMovingPlayerDips && isCallAllowed() && (<div style={{
                 background: 'rgb(41, 128, 185)',
                 padding: '20px 30px',
                 color: '#000',

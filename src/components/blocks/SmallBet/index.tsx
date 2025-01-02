@@ -41,7 +41,7 @@ export const SmallBet = observer(({playersDips, chosenPlayerBetValue, selectedPl
       <div style={{marginBottom: 10}}>
         {getAvailablePlayerBet().map((dipText, index) => {
           const highlighted = dipHighlighted(dipText.dipAmount)
-          return <div style={{position: 'relative', display: 'inline-block'}}>
+          return <div key={index} style={{position: 'relative', display: 'inline-block'}}>
             <div data-text={dipText.text} className='player-bet-as-dip' onClick={() => highlighted ? onAddToBet(selectedPlayer, dipText.dipAmount) : {} } style={{display: 'inline-block', padding: '5px 10px', background: highlighted ? '#fcbc0a' : 'lightgray', borderRadius: 10, marginRight: 10, marginBottom: 10, cursor: 'pointer', userSelect: 'none'}}>{dipText.text}</div>
           </div>
         })}
