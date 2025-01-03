@@ -992,7 +992,7 @@ export const compareRoyalFlush = (firstHand, secondHand) => {
   }
 }
 
-const comparePlayers = async (firstPlayerCards, secondPlayerCards) => {
+export const comparePlayers = async (firstPlayerCards, secondPlayerCards) => {
   const firstPlayerRanking = await detectHandRanking(firstPlayerCards)
   const secondPlayerRanking = await detectHandRanking(secondPlayerCards)
 

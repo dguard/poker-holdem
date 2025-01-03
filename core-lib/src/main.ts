@@ -4,6 +4,7 @@ import { PokerAlgo } from "./pokerAlgo";
 import { cardService } from "@core-lib/components/services/card.service";
 import { PLAYER_ALADDIN, PLAYER_YAGO, PLAYER_ABU, PLAYER_WALLE, PLAYER_TIGER, PLAYER_EVE, PLAYER_CARPET, PLAYER_JASMINE, PLAYER_SULTAN, DILER_JINNY } from "./components/models/players";
 import { DIP_AMOUNT_100 } from "@core-lib/components/models/dipsAmount";
+import {detectHandRanking, comparePlayers, compareNoPairHands} from "@core-lib/utils/pokerAlgo";
 
 
 const players = [/* DILER_JINNY, */ PLAYER_ALADDIN, PLAYER_YAGO, PLAYER_CARPET,
@@ -117,6 +118,74 @@ async function sampleRiver(pokerAlgo) {
 }
 
 
+async function detectWinner(pokerAlgo) {
+
+  let winner = await pokerAlgo.detectWinner()
+  if('winner' in winner) {
+    let winnerCards = await pokerAlgo.getPlayerCards(winner['winner'])
+    console.log({'player': winner['winner'], cards: winnerCards})
+    console.log(winner)
+    console.log({"riverCards": await pokerAlgo.getRiverCards()})
+    let handRanking = await detectHandRanking(await pokerAlgo.getPlayerCards(winner['winner']))
+    console.log({handRanking: JSON.stringify(handRanking)})
+    console.log({winners: winner['winner']})
+  } else if('winners' in winner) {
+    console.log({winners: winner['winners']})
+
+    let dictPlayers = {}
+    let winners = winner['winners']
+
+    let hands = await Promise.all(winners.map(async function(samplePlayer) {
+      return [
+        samplePlayer,
+        [].concat(await pokerAlgo.getPlayerCards(samplePlayer)).concat(await pokerAlgo.getRiverCards())
+      ]
+    }))
+
+    hands.sort((firstHandTuple, secondHandTuple)=> {
+      let res = compareNoPairHands(firstHandTuple[1], secondHandTuple[1], 10)
+      let player = firstHandTuple[0]
+      let playerAnother = secondHandTuple[0]
+
+      if(res['winner'] && res['winner']['first_hand']) {
+        if(typeof dictPlayers[player] === 'undefined') {
+          // keep
+          dictPlayers[player] = 1
+        } else {
+          dictPlayers[player] += 1
+        }
+      } else if(res['winner'] && res['winner']['second_hand']) {
+        if(typeof dictPlayers[playerAnother] === 'undefined') {
+          // keep
+          dictPlayers[playerAnother] = 1
+        } else {
+          dictPlayers[playerAnother] += 1
+        }
+      }
+
+      return 0
+    })
+    let listPlayers = Object.keys(dictPlayers)
+    let endPlayer = listPlayers[0]
+
+    for (let player of winner['winners']) {
+      let winnerCards = await pokerAlgo.getPlayerCards(player)
+      console.log({'player': player, cards: winnerCards})
+      let handRanking = await detectHandRanking(await pokerAlgo.getPlayerCards(player))
+      console.log({handRanking: JSON.stringify(handRanking)})
+    }
+    console.log({winners: winner['winners']})
+    console.log({"riverCards": await pokerAlgo.getRiverCards()})
+
+    console.log({dictPlayers})
+    if(Object.keys(dictPlayers).length === 2) {
+      console.log({winners: Object.keys(dictPlayers)})
+    } else {
+      console.log({winner: endPlayer})
+    }
+  }
+}
+
 async function main(){
   const playerDipsMap = await playerDipsService.findPlayerDipsMap()
   const playerDeposits = await playerDepositsService.findPlayerDepositsMap()
@@ -134,6 +203,13 @@ async function main(){
   await sampleFlop(pokerAlgo)
   await sampleTurn(pokerAlgo)
   await sampleRiver(pokerAlgo)
+
+  // console.log({flopCards: await pokerAlgo.getFlopCards()})
+  // console.log({turnCards: await pokerAlgo.getTurnCards()})
+  // console.log({riverCards: await pokerAlgo.getRiverCards()})
+  // console.log(await pokerAlgo.getCards())
+
+  detectWinner(pokerAlgo)
 }
 
 main()
