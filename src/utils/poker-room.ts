@@ -54,6 +54,48 @@ export const animateMovingPlayerDips = async (chosenPlayerBet, player) => {
     })
   })
 }
+
+export const calculateCardToFlop = async(cardPos) => {
+  const element = document.querySelector(`.board-center`).querySelector(`.straight-card:nth-child(${cardPos})`)
+  const deckCard = Array.from(document.querySelector('.dealer-deck').querySelectorAll('.deck-card')).slice(-`${cardPos}`)[0]
+
+  var bodyRect = document.body.getBoundingClientRect(),
+      elemRect = element.getBoundingClientRect(),
+      offsetTop   = elemRect.top - bodyRect.top,
+      offsetLeft   = elemRect.left - bodyRect.left,
+      deckRect = deckCard.getBoundingClientRect(),
+      deckOffsetTop   = deckRect.top - bodyRect.top,
+      deckOffsetLeft   = deckRect.left - bodyRect.left;
+
+  return {
+    translateYValue: offsetTop - deckOffsetTop,
+    translateXValue: offsetLeft - deckOffsetLeft,
+  }
+}
+
+export const passCardToFlop = async function(cardPos, translates) {
+  return new Promise((resolve) => {
+    let translateYValue = translates["translateYValue"]
+    let translateXValue = translates["translateXValue"]
+
+    const deckCard = Array.from(document.querySelector('.dealer-deck').querySelectorAll('.deck-card')).slice(-cardPos)[0]
+
+    deckCard.style['z-index'] = cardPos+1
+    deckCard.style['transition'] = `2s all`
+
+    deckCard.style['transform'] = `translateY(${translateYValue}px) translateX(${translateXValue}px) rotate(0deg)`
+
+    deckCard.removeAttribute('src')
+    // console.log(deckCard.style)
+
+    setTimeout(() => {
+//         deckCard.style['z-index'] = 0
+        resolve()
+    }, 250)
+  })
+}
+
+
 export const getChangedPotDips = async (potDips, selectedPlayer, chosenPlayerBet) => {
   const newPotDipsPlayerDict = {}
   potDips[selectedPlayer] && JSON.parse(JSON.stringify(potDips)).filter((potDip) => {

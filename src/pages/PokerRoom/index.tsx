@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import {
   animateMovingPlayerDips,
   getChangedPlayerDips,
-  getChangedPotDips
+  getChangedPotDips, passCardToFlop,
+  calculateCardToFlop
 } from "../../utils/poker-room";
 import { Simulate } from "react-dom/test-utils";
 import { SmallBet } from "../../components/blocks/SmallBet";
@@ -15,13 +16,287 @@ const RoomContainer = styled.div``
 const TableBorder = styled.div``
 const Table = styled.div``
 
+const CardOpened = styled.img`
+ /* line 102, index.sass */
+  &.deck-card.tA {
+   background-position: -2px -96px;
+ }
+
+ /* line 102, index.sass */
+  &.deck-card.t2 {
+   background-position: -102px -96px;
+ }
+
+ /* line 102, index.sass */
+  &.deck-card.t3 {
+    background-position: -130px -96px;
+ }
+
+ /* line 102, index.sass */
+  &.deck-card.t4 {
+    background-position: -194px -96px;
+ }
+
+ /* line 102, index.sass */
+  &.deck-card.t5 {
+    background-position: -258px -96px;
+ }
+
+ /* line 102, index.sass */
+  &.deck-card.t6 {
+    background-position: -322px -96px;
+ }
+
+ /* line 102, index.sass */
+  &.deck-card.t7 {
+    background-position: -386px -96px;
+ }
+
+ /* line 102, index.sass */
+  &.deck-card.t8 {
+    background-position: -450px -96px;
+ }
+
+ /* line 102, index.sass */
+  &.deck-card.t9 {
+    background-position: -514px -96px;
+ }
+
+ /* line 102, index.sass */
+  &.deck-card.tT {
+    background-position: -578px -96px;
+ }
+
+ /* line 102, index.sass */
+  &.deck-card.tJ {
+    background-position: -642px -96px;
+ }
+
+ /* line 102, index.sass */
+  &.deck-card.tQ {
+    background-position: -706px -96px;
+ }
+
+ /* line 102, index.sass */
+  &.deck-card.tK {
+    background-position: -770px -96px;
+ }
+
+ /* line 106, index.sass */ 
+  &.deck-card.pA {
+   background-position: 0px -284px;
+ }
+
+ /* line 106, index.sass */
+ &.deck-card.p2 {
+   background-position: -66px -284px;
+ }
+
+ /* line 106, index.sass */
+ &.deck-card.p3 {
+   background-position: -130px -284px;
+ }
+
+ /* line 106, index.sass */
+ &.deck-card.p4 {
+   background-position: -194px -284px;
+ }
+
+ /* line 106, index.sass */
+ &.deck-card.p5 {
+   background-position: -258px -284px;
+ }
+
+ /* line 106, index.sass */
+ &.deck-card.p6 {
+   background-position: -322px -284px;
+ }
+
+ /* line 106, index.sass */
+ &.deck-card.p7 {
+   background-position: -386px -284px;
+ }
+
+ /* line 106, index.sass */
+ &.deck-card.p8 {
+   background-position: -450px -284px;
+ }
+
+ /* line 106, index.sass */
+ &.deck-card.p9 {
+   background-position: -514px -284px;
+ }
+
+ /* line 106, index.sass */
+  &.deck-card.pT {
+    background-position: -578px -284px;
+ }
+
+ /* line 106, index.sass */
+  &.deck-card.pJ {
+    background-position: -642px -284px;
+ }
+
+ /* line 106, index.sass */
+  &.deck-card.pQ {
+    background-position: -706px -284px;
+ }
+
+ /* line 106, index.sass */
+  &.deck-card.pK {
+    background-position: -770px -284px;
+ }
+
+ /* line 110, index.sass */
+  &.deck-card.hA {
+   background-position: 0px -190px;
+ }
+
+ /* line 110, index.sass */
+  &.deck-card.h2 {
+    background-position: -66px -190px;
+ }
+
+ /* line 110, index.sass */
+  &.deck-card.h3 {
+    background-position: -130px -190px;
+ }
+
+ /* line 110, index.sass */
+  &.deck-card.h4 {
+    background-position: -194px -190px;
+ }
+
+ /* line 110, index.sass */
+ &.deck-card.h5 {
+   background-position: -258px -190px;
+ }
+
+ /* line 110, index.sass */
+ &.deck-card.h6 {
+   background-position: -322px -190px;
+ }
+
+ /* line 110, index.sass */
+ &.deck-card.h7 {
+   background-position: -386px -190px;
+ }
+
+ /* line 110, index.sass */
+ &.deck-card.h8 {
+   background-position: -450px -190px;
+ }
+
+ /* line 110, index.sass */
+ &.deck-card.h9 {
+   background-position: -514px -190px;
+ }
+
+ /* line 110, index.sass */
+ &.deck-card.hT {
+   background-position: -578px -190px;
+ }
+
+ /* line 110, index.sass */
+ &.deck-card.hJ {
+   background-position: -642px -190px;
+ }
+
+ /* line 110, index.sass */
+  &.deck-card.hQ {
+    background-position: -706px -190px;
+ }
+
+ /* line 110, index.sass */
+  &.deck-card.hK {
+    background-position: -770px -190px;
+ }
+
+ /* line 114, index.sass */ 
+ &.deck-card.cA {
+   background-position: -2px -2px;
+ }
+
+ /* line 114, index.sass */
+ &.deck-card.c2 {
+   background-position: -66px -2px;
+ }
+
+ /* line 114, index.sass */
+ &.deck-card.c3 {
+   background-position: -130px -2px;
+ }
+
+ /* line 114, index.sass */
+  &.deck-card.c4 {
+    background-position: -194px -2px;
+ }
+
+ /* line 114, index.sass */
+  &.deck-card.c5 {
+    background-position: -258px -2px;
+ }
+
+ /* line 114, index.sass */
+  &.deck-card.c6 {
+    background-position: -322px -2px;
+ }
+
+ /* line 114, index.sass */
+  &.deck-card.c7 {
+    background-position: -386px -2px;
+ }
+
+ /* line 114, index.sass */
+  &.deck-card.c8 {
+    background-position: -450px -2px;
+ }
+
+ /* line 114, index.sass */
+  &.deck-card.c9 {
+    background-position: -514px -2px;
+ }
+
+ /* line 114, index.sass */
+  &.deck-card.cT {
+    background-position: -578px -2px;
+ }
+
+ /* line 114, index.sass */
+  &.deck-card.cJ {
+    background-position: -642px -2px;
+ }
+
+ /* line 114, index.sass */
+  &.deck-card.cQ {
+    background-position: -706px -2px;
+ }
+
+ /* line 114, index.sass */
+  &.deck-card.cK {
+    background-position: -770px -2px;
+ }
+ `
+// const CardOpened = (className) => {
+//   const newStyle = Object.assign({
+//     backgroundImage: `url("public/cards.png")`
+//   })
+//
+//   return <div className={'card card-clovers-13'} width={60} height={90} />
+// }
+
 const CardShirt = ({style, className}: {style?: object, className?: string}) => {
   const newStyle = Object.assign({
     borderRadius: 14,
-    border: '2px solid #fff'
+    border: '2px solid #fff',
+    backgroundImage: 'url("public/cards.png")',
+    // backgroundPosition: '-2px -2px',
+    border: '1px solid #fff',
+    borderRadius: '5px'
+
   }, style ?? style)
 
-  return <img className={className} width={60} height={90} style={newStyle} src={'public/cardShirt.png'} />
+  return <CardOpened className={`${className}`} width={60} height={90} style={newStyle} src={'public/cardShirt.png'} />
 }
 let counter = 1
 
@@ -224,13 +499,13 @@ const PlayerBottomCenterCards = () => {
 }
 
 const PlayerBottomRightCards = ({cards}) => {
-
+console.log(cards)
  return (
    <div className={'dealer-deck'} style={{position: 'relative'}}>
       {/*<CardShirt style={{transformOrigin: 'left bottom',  position: 'absolute', left: 0, transform: 'rotate(-14deg)'}}  />*/}
       {/*<CardShirt />*/}
      {Array.from(Array(cards.length)).map((_, index) => {
-       return <CardShirt key={index} className={'deck-card'} style={{ position: 'absolute', bottom: index === 0 ? -117 : -115 + index * 0.4, left: 0, right: 0}} />
+       return <CardShirt key={index} className={`deck-card ${cards[index]}`} style={{ position: 'absolute', bottom: index === 0 ? -117 : -115 + index * 0.4, left: 0, right: 0}} />
      })}
    </div>
  )
@@ -337,7 +612,7 @@ const PLAYERS_CIRCLE = {
 }
 
 // h – черви, d – бубны, c – трефы, s – пики.
-const lears =['h','d','c','s']
+const lears =['h','t','c','p']
 const lear_pack = ['A','K','Q','J','T',9,8,7,6,5,4,3,2]
 
 const getRandomNumber = (min, max) => {
@@ -348,7 +623,7 @@ const createDeck = () => {
   const newDeckInitial = []
   lears.map((lear) => {
     lear_pack.map((card) => {
-      newDeckInitial.push([card, lear].join(''))
+      newDeckInitial.push([lear, card].join(''))
     })
   })
   const newDeck = []
@@ -365,6 +640,7 @@ export function PokerRoom(){
   const [selectedPlayer, setSelectedPlayerInternal] = useState()
   const [selectedRound, setSelectedRound] = useState(ROUND_PREFLOP)
   const [selectedStage, setSelectedStage] = useState(ROUND_STAGE_DEALER)
+  const [playerPlayed, setPlayerPlayed] = useState({})
 
   useEffect(() => {
     if(!selectedPlayer) {
@@ -378,6 +654,13 @@ export function PokerRoom(){
       document.querySelector(`.${selectedPlayer}player`).style['transform'] = 'scale(0.9)'
       document.querySelector(`.${selectedPlayer}player`).style['border-width'] = '1px'
     }
+    if(typeof playerPlayed[player] === "undefined") {
+      playerPlayed[player] = 1
+    } else {
+      playerPlayed[player] += 1
+    }
+    setPlayerPlayed(playerPlayed)
+    console.log({playerPlayed})
 
     await new Promise((resolve) => {
       setTimeout(() => {
@@ -395,6 +678,11 @@ export function PokerRoom(){
       }, 500)
     })
     setSelectedPlayerInternal(player)
+
+
+    if(playerPlayed[PLAYER_JINNY] === 2) {
+      alert("flop started")
+    }
   }
 
   const [deck, setDeck] = useState(createDeck())
@@ -491,19 +779,20 @@ export function PokerRoom(){
   const rotate = ['-14deg', '-14deg', `${45-14}deg`, `${135-14}deg`, '-14deg', '-14deg', '-14deg', `${-135-14}deg`, `${-45-14}deg`]
   const rotateStraight = ['0deg', '0deg', `${45}deg`, `${135}deg`, '0deg', '0deg', '0deg', `${-135}deg`, `${-45}deg`]
 
+
   const calculateCard = async(positionIndex, cardIndex, cardType) => {
     const element = document.querySelector(`.${playersPositions[positionIndex]}`).querySelector(cardType === 'rotated' ? '.rotated-card' : '.straight-card')
     const deckCard = Array.from(document.querySelector('.dealer-deck').querySelectorAll('.deck-card')).slice(-cardIndex)[0]
 
     var bodyRect = document.body.getBoundingClientRect(),
-      elemRect = element.getBoundingClientRect(),
-      offsetTop   = elemRect.top - bodyRect.top,
-      offsetLeft   = elemRect.left - bodyRect.left,
-      deckRect = deckCard.getBoundingClientRect(),
-      deckOffsetTop   = deckRect.top - bodyRect.top,
-      deckOffsetLeft   = deckRect.left - bodyRect.left;
+        elemRect = element.getBoundingClientRect(),
+        offsetTop = elemRect.top - bodyRect.top,
+        offsetLeft = elemRect.left - bodyRect.left,
+        deckRect = deckCard.getBoundingClientRect(),
+        deckOffsetTop = deckRect.top - bodyRect.top,
+        deckOffsetLeft = deckRect.left - bodyRect.left;
 
-    if(cardType === 'rotated') {
+    if (cardType === 'rotated') {
       return {
         positionIndex,
         cardIndex,
@@ -595,6 +884,42 @@ export function PokerRoom(){
         const newDeck = JSON.parse(JSON.stringify(deck.slice(0)))
         newDeck.splice(-(playersPositions.length+playersPositions.length),playersPositions.length+playersPositions.length)
         setDeck(newDeck)
+
+        setTimeout(async function(){
+          let cardPos = 1
+          let translates = await calculateCardToFlop(cardPos)
+          passCardToFlop(cardPos, translates)
+          await new Promise((resolve) => {
+            setTimeout(() => {resolve()}, 500)
+          })
+
+          /* let */ cardPos = 2
+          /* let */ translates = await calculateCardToFlop(cardPos)
+          passCardToFlop(cardPos, translates)
+          await new Promise((resolve) => {
+            setTimeout(() => {resolve()}, 500)
+          })
+
+          /* let */ cardPos = 3
+          /* let */ translates = await calculateCardToFlop(cardPos)
+          passCardToFlop(cardPos, translates)
+
+          await new Promise((resolve) => {
+            setTimeout(() => {resolve()}, 700)
+          })
+          /* TURN */
+          /* let */ cardPos = 4
+          /* let */ translates = await calculateCardToFlop(cardPos)
+          passCardToFlop(cardPos, translates)
+          await new Promise((resolve) => {
+            setTimeout(() => {resolve()}, 700)
+          })
+
+          /* RIVER */
+          /* let */ cardPos = 5
+          /* let */ translates = await calculateCardToFlop(cardPos)
+          passCardToFlop(cardPos, translates)
+        }, 250)
       }
     }
     run()
@@ -771,14 +1096,34 @@ export function PokerRoom(){
                   <PlayerTopCenterCards />
                   <PlayerTopLeftCards />
                 </div>
+                <div className={"board-center"} style={{position: 'relative', marginLeft: 0}}>
+                  <CardShirt className='straight-card'
+                             style={{visibility: 'hidden', position: 'absolute', top: 180, left: 128, right: 0}}/>
+                  <CardShirt className='straight-card'
+                             style={{visibility: 'hidden', position: 'absolute', top: 180, left: 128 + 80, right: 0}}/>
+                  <CardShirt className='straight-card'
+                               style={{visibility: 'hidden', position: 'absolute', top: 180, left: 128 + 80 + 80, right: 0}}/>
+                  <CardShirt className='straight-card'
+                             style={{visibility: 'hidden', position: 'absolute', top: 180, left: 128 + 80 + 80 + 80, right: 0}}/>
+                  <CardShirt className='straight-card'
+                             style={{visibility: 'hidden', position: 'absolute', top: 180, left: 128 + 80 + 80 + 80 + 80, right: 0}}/>
+                </div>
 
 
-                <div style={{position: 'absolute', bottom: 120, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', left: 0, right: 0}}>
-                  <PlayerBottomLeftCards />
-                  <PlayerBottomCenterCards />
+                <div style={{
+                  position: 'absolute',
+                  bottom: 120,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  left: 0,
+                  right: 0
+                }}>
+                  <PlayerBottomLeftCards/>
+                  <PlayerBottomCenterCards/>
 
                   <div style={{position: 'relative'}}>
-                    <img style={{marginTop: 10}} width={50} height={50} src={'public/dealer.png'} />
+                    <img style={{marginTop: 10}} width={50} height={50} src={'public/dealer.png'}/>
 
                     {deckCardPositions.map((card, index) => {
                       return (
