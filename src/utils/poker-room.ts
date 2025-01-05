@@ -85,7 +85,8 @@ export const passCardToFlop = async function(cardPos, translates) {
 
     deckCard.style['transform'] = `translateY(${translateYValue}px) translateX(${translateXValue}px) rotate(0deg)`
 
-    deckCard.removeAttribute('src')
+    deckCard.src = 'public/1x1.png'
+    // deckCard.removeAttribute('src')
     // console.log(deckCard.style)
 
     setTimeout(() => {

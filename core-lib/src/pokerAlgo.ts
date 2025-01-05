@@ -362,11 +362,12 @@ PokerAlgo.js = function PokerAlgo (this: PokerAlgoJs, {players, deposits, player
 
   this.detectWinner = async function() {
     if(selectedRound === ROUND_RIVER) {
-      console.log('winners')
-      console.log(protectedDeposits)
-      console.log("roundDeposit", JSON.stringify(roundsDeposit))
+      // console.log('winners')
+      // console.log(protectedDeposits)
+      // console.log("roundDeposit", JSON.stringify(roundsDeposit))
 
       const roundAvailablePlayers = getRoundAvailablePlayers()
+
       const playersCards = []
       await Promise.all(roundAvailablePlayers.map(async (player) => {
         const playerCard = await that.getPlayerCards(player)

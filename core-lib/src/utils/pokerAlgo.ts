@@ -998,8 +998,8 @@ export const comparePlayers = async (firstPlayerCards, secondPlayerCards) => {
 
   if(firstPlayerRanking['royal_flush'] !== null && secondPlayerRanking['royal_flush'] !== null) {
     const res = compareRoyalFlush(firstPlayerCards, secondPlayerCards)
-    if(res['winner'] === 'first_hand') return -1
-    if(res['winner'] === 'second_hand') return 1
+    if(res['winner'] && typeof res['winner']['first_hand'] !== 'undefined') return -1
+    if(res['winner'] && typeof res['winner']['second_hand'] !== 'undefined') return 1
     return 0
   }
   if(firstPlayerRanking['royal_flush']) return -1
@@ -1007,8 +1007,8 @@ export const comparePlayers = async (firstPlayerCards, secondPlayerCards) => {
 
   if(firstPlayerRanking['straight_flush'] !== null && secondPlayerRanking['straight_flush'] !== null) {
     const res = compareStraightFlush(firstPlayerCards, secondPlayerCards)
-    if(res['winner'] === 'first_hand') return -1
-    if(res['winner'] === 'second_hand') return 1
+    if(res['winner'] && typeof res['winner']['first_hand'] !== 'undefined') return -1
+    if(res['winner'] && typeof res['winner']['second_hand'] !== 'undefined') return 1
     return 0
   }
   if(firstPlayerRanking['straight_flush']) return -1
@@ -1016,8 +1016,8 @@ export const comparePlayers = async (firstPlayerCards, secondPlayerCards) => {
 
   if(firstPlayerRanking['four_of_kind'] !== null && secondPlayerRanking['four_of_kind'] !== null) {
     const res = compareFourOfKind(firstPlayerCards, secondPlayerCards)
-    if(res['winner'] === 'first_hand') return -1
-    if(res['winner'] === 'second_hand') return 1
+    if(res['winner'] && typeof res['winner']['first_hand'] !== 'undefined') return -1
+    if(res['winner'] && typeof res['winner']['second_hand'] !== 'undefined') return 1
     return 0
   }
   if(firstPlayerRanking['four_of_kind']) return -1
@@ -1025,8 +1025,8 @@ export const comparePlayers = async (firstPlayerCards, secondPlayerCards) => {
 
   if(firstPlayerRanking['full_house'] !== null && secondPlayerRanking['full_house'] !== null) {
     const res = compareFullHouse(firstPlayerCards, secondPlayerCards)
-    if(res['winner'] === 'first_hand') return -1
-    if(res['winner'] === 'second_hand') return 1
+    if(res['winner'] && typeof res['winner']['first_hand'] !== 'undefined') return -1
+    if(res['winner'] && typeof res['winner']['second_hand'] !== 'undefined') return 1
     return 0
   }
   if(firstPlayerRanking['full_house']) return -1
@@ -1034,8 +1034,8 @@ export const comparePlayers = async (firstPlayerCards, secondPlayerCards) => {
 
   if(firstPlayerRanking['flush'] !== null && secondPlayerRanking['flush'] !== null) {
     const res = compareFlush(firstPlayerCards, secondPlayerCards)
-    if(res['winner'] === 'first_hand') return -1
-    if(res['winner'] === 'second_hand') return 1
+    if(res['winner'] && typeof res['winner']['first_hand'] !== 'undefined') return -1
+    if(res['winner'] && typeof res['winner']['second_hand'] !== 'undefined') return 1
     return 0
   }
   if(firstPlayerRanking['flush']) return -1
@@ -1043,8 +1043,8 @@ export const comparePlayers = async (firstPlayerCards, secondPlayerCards) => {
 
   if(firstPlayerRanking['straight'] !== null && secondPlayerRanking['straight'] !== null) {
     const res = compareStraight(firstPlayerCards, secondPlayerCards)
-    if(res['winner'] === 'first_hand') return -1
-    if(res['winner'] === 'second_hand') return 1
+    if(res['winner'] && typeof res['winner']['first_hand'] !== 'undefined') return -1
+    if(res['winner'] && typeof res['winner']['second_hand'] !== 'undefined') return 1
     return 0
   }
   if(firstPlayerRanking['straight']) return -1
@@ -1052,8 +1052,8 @@ export const comparePlayers = async (firstPlayerCards, secondPlayerCards) => {
 
   if(firstPlayerRanking['three_of_kind'] !== null && secondPlayerRanking['three_of_kind'] !== null) {
     const res = compareThreeOfKind(firstPlayerCards, secondPlayerCards)
-    if(res['winner'] === 'first_hand') return -1
-    if(res['winner'] === 'second_hand') return 1
+    if(res['winner'] && typeof res['winner']['first_hand'] !== 'undefined') return -1
+    if(res['winner'] && typeof res['winner']['second_hand'] !== 'undefined') return 1
     return 0
   }
   if(firstPlayerRanking['three_of_kind']) return -1
@@ -1062,8 +1062,8 @@ export const comparePlayers = async (firstPlayerCards, secondPlayerCards) => {
   if(firstPlayerRanking['two_pairs'] !== null && secondPlayerRanking['two_pairs'] !== null) {
     const res = compareTwoPairs(firstPlayerCards, secondPlayerCards)
 
-    if(res['winner'] === 'first_hand') return -1
-    if(res['winner'] === 'second_hand') return 1
+    if(res['winner'] && typeof res['winner']['first_hand'] !== 'undefined') return -1
+    if(res['winner'] && typeof res['winner']['second_hand'] !== 'undefined') return 1
     return 0
   }
   if(firstPlayerRanking['two_pairs']) return -1
@@ -1071,16 +1071,16 @@ export const comparePlayers = async (firstPlayerCards, secondPlayerCards) => {
 
   if(firstPlayerRanking['pair'] !== null && secondPlayerRanking['pair'] !== null) {
     const res = comparePair(firstPlayerCards, secondPlayerCards)
-    if(res['winner'] === 'first_hand') return -1
-    if(res['winner'] === 'second_hand') return 1
+    if(res['winner'] && typeof res['winner']['first_hand'] !== 'undefined') return -1
+    if(res['winner'] && typeof res['winner']['second_hand'] !== 'undefined') return 1
     return 0
   }
   if(firstPlayerRanking['pair']) return -1
   if(secondPlayerRanking['pair']) return 1
 
   const res = compareNoPairHands(firstPlayerCards, secondPlayerCards, 1)
-  if(res['winner'] === 'first_hand') return -1
-  if(res['winner'] === 'second_hand') return 1
+  if(res['winner'] && typeof res['winner']['first_hand'] !== 'undefined') return -1
+  if(res['winner'] && typeof res['winner']['second_hand'] !== 'undefined') return 1
   return 0
 }
 
@@ -1128,6 +1128,7 @@ export const detectWinner = async (playersCards) => {
       }
     }
   }
+  // console.log("playersPoints", playersPoints)
   const score = {}
   Object.keys(playersPoints).map((index) => {
     if(!score[playersPoints[index]]) {
@@ -1135,10 +1136,15 @@ export const detectWinner = async (playersCards) => {
     }
     score[playersPoints[index]].push(index)
   })
-  const scoreKeysFromHigher = Object.keys(score).sort().reverse()
-  const filteredWinners = score[scoreKeysFromHigher[0]].filter((winnerIndex) => {
-    return !Boolean(loseTree[winnerIndex])
-  }).map((index) => Number(index))
+
+  let players = playersPoints
+  Object.keys(loseTree).forEach((index) => {
+    delete players[index]
+  })
+  let filteredWinners = Object.keys(players).map((item) => {return Number(item)})
+
+  // console.log("playersPoints", playersPoints)
+  // console.log("loseTree", loseTree)
 
   if(filteredWinners.length === 1) {
     return {

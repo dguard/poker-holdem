@@ -4,7 +4,13 @@ import { PokerAlgo } from "./pokerAlgo";
 import { cardService } from "@core-lib/components/services/card.service";
 import { PLAYER_ALADDIN, PLAYER_YAGO, PLAYER_ABU, PLAYER_WALLE, PLAYER_TIGER, PLAYER_EVE, PLAYER_CARPET, PLAYER_JASMINE, PLAYER_SULTAN, DILER_JINNY } from "./components/models/players";
 import { DIP_AMOUNT_100 } from "@core-lib/components/models/dipsAmount";
-import {detectHandRanking, comparePlayers, compareNoPairHands} from "@core-lib/utils/pokerAlgo";
+import {
+  detectHandRanking,
+  comparePlayers,
+  compareNoPairHands,
+  compareThreeOfKind,
+  comparePair, detectWinner
+} from "@core-lib/utils/pokerAlgo";
 
 
 const players = [/* DILER_JINNY, */ PLAYER_ALADDIN, PLAYER_YAGO, PLAYER_CARPET,
@@ -109,7 +115,7 @@ async function sampleRiver(pokerAlgo) {
 
   // detect winner
   let winnersRes = await pokerAlgo.detectWinner()
-  console.log(winnersRes)
+  return
 
   let res = await pokerAlgo.getPlayerDeposit(winnersRes['winners'] ? winnersRes['winners'][0] : winnersRes['winner'])
   console.log(res)
@@ -117,56 +123,84 @@ async function sampleRiver(pokerAlgo) {
   console.log(res)
 }
 
+// async function comparePair8And8() {
+//   let firstHand = ['hearts-7', 'pikes-6', 'clovers-8', 'hearts-7', 'pikes-8']
+//   let secondHand = ['tiles-9', 'clovers-7', 'hearts-8', 'tiles-8', 'tiles-2']
+//
+//   let res = [firstHand, secondHand].sort(async function(hands, handsAnother){
+//     return await comparePlayers(hands, handsAnother)
+//   }).reverse()
+//
+//   console.log("res", [JSON.stringify(firstHand), JSON.stringify(secondHand)].indexOf(JSON.stringify(res[0])) === 0 ?
+//       {winner: {first_hand: {}}} : {winner: {second_hand: {}}} )
+// }
+// async function compareThreeOfKindOfQueens() {
+//   let firstHand = ['pikes-q', 'pikes-3'].concat(['hearts-q', 'clovers-q', 'clovers-4', 'clovers-3', 'hearts-8'])
+//   let secondHand = [ 'tiles-q', 'pikes-k'].concat(['hearts-q', 'clovers-q', 'clovers-4', 'clovers-3', 'hearts-8'])
+//
+//   let res = [firstHand, secondHand].sort(async function(hand, handAnother){
+//     return await comparePlayers(hand, handAnother)
+//   }).reverse()
+//
+//   console.log("res", [JSON.stringify(firstHand), JSON.stringify(secondHand)].indexOf(JSON.stringify(res[0])) === 0 ?
+//       {winner: {first_hand: {}}} : {winner: {second_hand: {}}} )
+// }
+// async function compareTwoPairsKingsAnd8() {
+//
+// }
+// async function compareStreet7To11() {
+//
+// }
+// async function compareTwoFlashes() {
+//
+// }
+// async function compareTwoPlayers(){
+//   let firstHand = [ 'pikes-j', 'tiles-8' ].concat(['hearts-q', 'tiles-3', 'tiles-a', 'clovers-3', 'clovers-6'])
+//
+//   let secondHand = [ 'hearts-9', 'pikes-t' ].concat(['hearts-q', 'tiles-3', 'tiles-a', 'clovers-3', 'clovers-6'])
+//
+//   let res = [firstHand, secondHand].sort(async function(hand, handAnother){
+//     return await comparePlayers(hand, handAnother)
+//   }).reverse()
+//   const firstPlayerRanking = await detectHandRanking(firstHand)
+//   const secondPlayerRanking = await detectHandRanking(secondHand)
+//
+//   // console.log("res", res)
+//   // console.log("firstPlayerRanking", firstPlayerRanking)
+//   // console.log("secondPlayerRanking", secondPlayerRanking)
+//   // process.exit()
+//
+//
+//   console.log("res", [JSON.stringify(firstHand), JSON.stringify(secondHand)].indexOf(JSON.stringify(res[0])) === 0 ?
+//       {winner: {first_hand: {}}} : {winner: {second_hand: {}}} )
+//   process.exit()
+// }
 
-async function detectWinner(pokerAlgo) {
-
+async function localDetectWinner(pokerAlgo) {
   let winner = await pokerAlgo.detectWinner()
-  if('winner' in winner) {
-    let winnerCards = await pokerAlgo.getPlayerCards(winner['winner'])
-    console.log({'player': winner['winner'], cards: winnerCards})
-    console.log(winner)
-    console.log({"riverCards": await pokerAlgo.getRiverCards()})
-    let handRanking = await detectHandRanking(await pokerAlgo.getPlayerCards(winner['winner']))
-    console.log({handRanking: JSON.stringify(handRanking)})
-    console.log({winners: winner['winner']})
-  } else if('winners' in winner) {
-    console.log({winners: winner['winners']})
+  // console.log("'winners' in winner", 'winners' in winner)
 
-    let dictPlayers = {}
-    let winners = winner['winners']
-
-    let hands = await Promise.all(winners.map(async function(samplePlayer) {
-      return [
-        samplePlayer,
-        [].concat(await pokerAlgo.getPlayerCards(samplePlayer)).concat(await pokerAlgo.getRiverCards())
-      ]
+  if('winners' in winner) {
+    const playersCards = []
+    await Promise.all(winner['winners'].map(async (player) => {
+      const playerCard = await pokerAlgo.getPlayerCards(player)
+      const boardCards = await pokerAlgo.getCards()
+      playersCards.push(playerCard.concat(boardCards))
     }))
 
-    hands.sort((firstHandTuple, secondHandTuple)=> {
-      let res = compareNoPairHands(firstHandTuple[1], secondHandTuple[1], 10)
-      let player = firstHandTuple[0]
-      let playerAnother = secondHandTuple[0]
+    let res = await detectWinner(playersCards)
+    if('winners' in res) {
+      let confirmWinner = []
+      res['winners'].forEach((item) => {
+        confirmWinner.push(winner['winners'][item])
+      })
 
-      if(res['winner'] && res['winner']['first_hand']) {
-        if(typeof dictPlayers[player] === 'undefined') {
-          // keep
-          dictPlayers[player] = 1
-        } else {
-          dictPlayers[player] += 1
-        }
-      } else if(res['winner'] && res['winner']['second_hand']) {
-        if(typeof dictPlayers[playerAnother] === 'undefined') {
-          // keep
-          dictPlayers[playerAnother] = 1
-        } else {
-          dictPlayers[playerAnother] += 1
-        }
-      }
-
-      return 0
-    })
-    let listPlayers = Object.keys(dictPlayers)
-    let endPlayer = listPlayers[0]
+      console.log("confirm")
+      console.log("winners", confirmWinner)
+    } else {
+      console.log("confirm")
+      console.log("winner", winner['winners'][res['winner']])
+    }
 
     for (let player of winner['winners']) {
       let winnerCards = await pokerAlgo.getPlayerCards(player)
@@ -174,16 +208,12 @@ async function detectWinner(pokerAlgo) {
       let handRanking = await detectHandRanking(await pokerAlgo.getPlayerCards(player))
       console.log({handRanking: JSON.stringify(handRanking)})
     }
-    console.log({winners: winner['winners']})
     console.log({"riverCards": await pokerAlgo.getRiverCards()})
 
-    console.log({dictPlayers})
-    if(Object.keys(dictPlayers).length === 2) {
-      console.log({winners: Object.keys(dictPlayers)})
-    } else {
-      console.log({winner: endPlayer})
-    }
+    return
   }
+  console.log("confirm")
+  console.log("winner", winner['winner'])
 }
 
 async function main(){
@@ -204,12 +234,24 @@ async function main(){
   await sampleTurn(pokerAlgo)
   await sampleRiver(pokerAlgo)
 
+  // https://pokercm.com/baza-znaniy/spornye-situatsii-v-pokere/
+  // highestCard, kicker
+
+  // Пример 1: Совпадение пар
+  // Пример 2: Совпадение троек
+  // Пример 3: Совпадение «две пары»
+  // Пример 4: Совпадение старшинства комбинаций
+  // Пример 5: Совпадение флэшей
+
+  // await comparePair8And8()
+  // await compareThreeOfKindOfQueens()
   // console.log({flopCards: await pokerAlgo.getFlopCards()})
   // console.log({turnCards: await pokerAlgo.getTurnCards()})
   // console.log({riverCards: await pokerAlgo.getRiverCards()})
   // console.log(await pokerAlgo.getCards())
+  // await compareTwoPlayers()
 
-  detectWinner(pokerAlgo)
+  localDetectWinner(pokerAlgo)
 }
 
 main()
