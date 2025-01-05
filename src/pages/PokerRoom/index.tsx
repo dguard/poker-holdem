@@ -24,7 +24,7 @@ const CardOpened = styled.img`
 
  /* line 102, index.sass */
   &.deck-card.t2 {
-   background-position: -102px -96px;
+   background-position: -66px -96px;
  }
 
  /* line 102, index.sass */
